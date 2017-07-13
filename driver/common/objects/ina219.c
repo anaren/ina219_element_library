@@ -10,7 +10,7 @@ static ina219_config_t ina219_config[NUM_IDS] = {0};
 
 static int8_t ina219_addr_to_index(uint8_t addr)
 {
-  switch(id)
+  switch(addr)
   {
     case 0x40:
       return 0;
@@ -27,7 +27,7 @@ static int8_t ina219_addr_to_index(uint8_t addr)
 
 static bool ina219_is_valid_addr(uint8_t addr)
 {
-  return ina219_id_to_index(addr) != -1;
+  return ina219_addr_to_index(addr) != -1;
 }
 
 ina219_result_t INA219_Init(uint8_t addr)
@@ -105,7 +105,7 @@ if( !ina219_is_valid_addr(addr) )
   return INA219_WriteReg(addr, INA219_REG_CALIBRATION, value);
 }
 
-ina219_result_t INA219_GetBusVoltageRaw(uint8_t addr, uin16_t *voltage) {
+ina219_result_t INA219_GetBusVoltageRaw(uint8_t addr, int16_t *voltage) {
 if( !ina219_is_valid_addr(addr) )
     return INA219_INVALID_ADDR;
 
@@ -139,7 +139,7 @@ if( !ina219_is_valid_addr(addr) )
   // reset the cal register, meaning CURRENT and POWER will
   // not be available ... avoid this by always setting a cal
   // value even if it's an unfortunate extra step
-  ina219_result_t ret_val = INA219_WriteReg(addr, INA219_REG_CALIBRATION, ina219_calValue);
+  ina219_result_t ret_val = INA219_WriteReg(addr, INA219_REG_CALIBRATION, ina219_config[ina219_addr_to_index(addr)].calibration_reg_val);
 
   if( ret_val == INA219_SUCCESS )
   {

@@ -144,7 +144,7 @@ ina219_result_t INA219_SetConfig(uint8_t addr, const ina219_config_t *config);
 * @param[in] addr - I2C Address of device
 * @param[in] value - calculated calibration value
 */
-ina219_result_t INA219_SetCalibration(uint8_t addr, uint16_t value);
+ina219_result_t INA219_SetCalibrationRaw(uint8_t addr, uint16_t value);
 
 /**
 * Get direct reading of INA219_REG_BUSVOLTAGE register
