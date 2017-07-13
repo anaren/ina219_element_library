@@ -17,6 +17,42 @@
 		"setup": ""
 	},
 	"elements": {
+		"current": {
+			"label": "Read Current (mA)",
+			"language": {
+				"en": {
+					"label": "Read Current (mA)"
+				}
+			},
+			"returnType": "float",
+			"inputType": "void",
+			"icon": null,
+			"code": ""
+		},
+		"bus_voltage": {
+			"label": "Read Bus Voltage (Volts)",
+			"language": {
+				"en": {
+					"label": "Read Bus Voltage (Volts)"
+				}
+			},
+			"returnType": "float",
+			"inputType": "void",
+			"icon": null,
+			"code": ""
+		},
+		"shunt_voltage": {
+			"label": "Read Shunt Voltage (mV)",
+			"language": {
+				"en": {
+					"label": "Read Shunt Voltage (mV)"
+				}
+			},
+			"returnType": "float",
+			"inputType": "void",
+			"icon": null,
+			"code": ""
+		}
 	},
 	
 	"config":{

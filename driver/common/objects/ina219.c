@@ -4,8 +4,6 @@
 #include "ina219_config.h"
 #include <stdbool.h>
 
-#define INA219_SLAVE_BASE_ADDR 0x40
-
 #define NUM_IDS 4 // 0x40 through 0x45. Only 0x40, 0x41, 0x44, and 0x45 are actually available
 
 static ina219_config_t ina219_config[NUM_IDS] = {0};
