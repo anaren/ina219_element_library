@@ -1,0 +1,37 @@
+{
+	"type": "Embedded Library",
+	"label": "INA219 Driver",
+	"language": {
+		"en": {
+			"label": "INA219 Driver"
+		}
+	},
+	"name": "ina219",
+	"author": "Anaren Inc.",
+	"manufacturer": "Texas Instruments",
+	"description": "Zero-Drift, Bidirectional Current/Power Monitor With I2C Interface",
+	"signature": "",
+	"version": "1.0.0",
+	"code": {
+		"global": "",
+		"setup": ""
+	},
+	"elements": {
+	},
+	
+	"config":{
+		"file":"ina219_config.h",
+		
+		"values":{
+		}
+	},
+	
+	"categories": [
+		"Sensor"
+	],
+	"links": {
+		"Product Page": "http://www.ti.com/product/ina219",
+		"Datasheet": "http://www.ti.com/lit/ds/symlink/ina219.pdf",
+		"Wiki Page": "https://atmosphere.anaren.com/wiki/INA219_Driver"
+	}
+}
