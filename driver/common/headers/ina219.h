@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdint.h>
+#include "ina219_config.h"
 
 #define INA219_SLAVE_BASE_ADDR 0x40
 
@@ -83,9 +84,11 @@
 
 typedef struct ina219_config_t
 {
-    uint16_t config_reg_val; /*< Configuration register raw value */
-    uint16_t calibration_reg_val; /*< Calibration register raw value */
-    uint16_t current_lsb_ma; /*< LSB of current reading. Used to convert from counts to mA */
+    uint32_t shunt_ohms;
+    uint16_t voltage_range;
+    uint16_t gain;
+    uint16_t bus_adc_resolution;
+    uint16_t shunt_adc_resolution;
 } ina219_config_t;
 
 typedef enum ina219_result_t
@@ -134,7 +137,7 @@ ina219_result_t INA219_ReadReg( uint8_t addr, uint8_t reg, uint16_t *value );
 * @param[in] addr - I2C Address of device
 * @param[in] config
 */
-ina219_result_t INA219_SetConfig( uint8_t addr, const ina219_config_t *config );
+ina219_result_t INA219_Configure( uint8_t addr, uint32_t shunt_milli_ohms, uint16_t voltage_range, uint16_t gain, uint16_t bus_adc_resolution, uint16_t shunt_adc_resolution );
 
 /**
 * Set INA219 Calibration
@@ -173,20 +176,28 @@ ina219_result_t INA219_GetShuntVoltageRaw( uint8_t addr, int16_t *voltage );
 ina219_result_t INA219_GetCurrentRaw( uint8_t addr, int16_t *current );
 
 /**
+* Get direct reading of INA219_POWER register
+*
+* @param[in] addr - I2C address of device
+* @param[out] power
+*/
+ina219_result_t INA219_GetPowerRaw( uint8_t addr, int16_t *power );
+
+/**
 * Get Shunt Voltage in MilliVolts (mV)
 *
 * @param[in] addr - I2C Address of device
 * @param[out] voltage
 */
-ina219_result_t INA219_GetShuntVoltageMv( uint8_t addr, float *voltage );
+ina219_result_t INA219_GetShuntVoltageMv( uint8_t addr, uint32_t *voltage );
 
 /**
-* Get Bus Voltage in Volts (V)
+* Get Bus Voltage in MilliVolts (V)
 *
 * @param[in] addr - I2C Address of device
 * @param[out] voltage
 */
-ina219_result_t INA219_GetBusVoltageV( uint8_t addr, float *voltage );
+ina219_result_t INA219_GetBusVoltageMv( uint8_t addr, uint32_t *voltage );
 
 /**
 * Get Current in MilliAmps (mA)
@@ -194,4 +205,19 @@ ina219_result_t INA219_GetBusVoltageV( uint8_t addr, float *voltage );
 * @param[in] addr - I2C Address of device
 * @param[out] current
 */
-ina219_result_t INA219_GetCurrentMa( uint8_t addr, float *current );
+ina219_result_t INA219_GetCurrentMa( uint8_t addr, uint32_t *current );
+
+/**
+* Get Power in MilliWatts (mW)
+*
+* @param[in] addr - I2C Address of device
+* @param[out] power
+*/
+ina219_result_t INA219_GetPowerMw( uint8_t addr, uint32_t *power );
+
+/**
+* Perform a reset (Bit 15 of configuration register)
+*
+* @param[in] addr - I2C Address of device
+*/
+ina219_result_t INA219_Reset( uint8_t addr );

@@ -1,3 +1,3 @@
-	float bus_voltage;
-	INA219_GetBusVoltageV(INA219_SLAVE_BASE_ADDR, &bus_voltage);
+	uint32_t bus_voltage;
+	INA219_GetBusVoltageMv(INA219_ADDR, &bus_voltage);
 	return bus_voltage;
