@@ -8,14 +8,16 @@
 
 typedef struct ina219_calibration_t
 {
-    uint16_t current_lsb_ma;
-    uint16_t power_lsb_mW;
+    uint16_t current_lsb_uA;
+    uint16_t power_lsb_uW;
 } ina219_calibration_t;
 
 static ina219_calibration_t ina219_cal[NUM_IDS] = {0};
 
 #define CALIBRATION_FACTOR (.04096)
 #define MAX_CALIBRATION_VALUE (0xFFFE)
+
+#define SHUNT_VOLTAGE_MULTIPLIER (10)
 
 // In the spec (p17) the current LSB factor for the minimum LSB is
 // documented as 32767, but a larger value (100.1% of 32767) is used
@@ -85,7 +87,7 @@ ina219_result_t INA219_ReadReg( uint8_t addr, uint8_t reg, uint16_t *value )
     uint8_t read_bytes[2] = {0};
     uint16_t read_data = 0;
 
-    write_bytes[0] = addr;
+    write_bytes[0] = reg;
     AIR_I2C_ComboRead( addr, write_bytes, 1, read_bytes, 2 );
     read_data = ( unsigned int )read_bytes[0] << 8;
     read_data |= read_bytes[1];
@@ -128,15 +130,17 @@ ina219_result_t INA219_Configure( uint8_t addr, uint32_t shunt_milli_ohms, uint1
         return INA219_INVALID_ADDR;
     }
 
-    int8_t index = ina219_addr_to_index(addr);
+    uint8_t index = ina219_addr_to_index(addr);
 
     float shunt_ohms = shunt_milli_ohms / 1000.0;
 
     // Maximum current across the shunt
     float max_possible_current = get_max_gain_voltage(gain) / shunt_ohms;
 
+    // Calculate lsb value of current
     float current_lsb = max_possible_current / CURRENT_LSB_FACTOR; // In Amps
 
+    // Cut off at theoretical minimum
     float min_current_lsb = calculate_min_current_lsb( shunt_ohms );
 
     if( current_lsb < min_current_lsb )
@@ -144,12 +148,14 @@ ina219_result_t INA219_Configure( uint8_t addr, uint32_t shunt_milli_ohms, uint1
         current_lsb = min_current_lsb;
     }
 
+    // From datasheet, power LSB is 20 times current LSB
     float power_lsb = current_lsb * 20; // In Watts
 
     uint16_t calibration = (uint16_t)(CALIBRATION_FACTOR/(current_lsb * shunt_ohms));
 
-    ina219_cal[index].current_lsb_ma = (uint16_t)(current_lsb * 1000);
-    ina219_cal[index].power_lsb_mW = (uint16_t)(power_lsb * 1000);
+    // Save LSB multipliers
+    ina219_cal[index].current_lsb_uA = (uint16_t)(current_lsb * 1000000);
+    ina219_cal[index].power_lsb_uW = (uint16_t)(power_lsb * 1000000);
 
     ina219_result_t ret_val = INA219_WriteReg( addr, INA219_REG_CALIBRATION, calibration );
 
@@ -214,47 +220,47 @@ ina219_result_t INA219_GetPowerRaw( uint8_t addr, int16_t *power )
 }
 
 
-ina219_result_t INA219_GetShuntVoltageMv( uint8_t addr, uint32_t *voltage )
+ina219_result_t INA219_GetShuntVoltage( uint8_t addr, int32_t *voltage )
 {
     if( !ina219_is_valid_addr( addr ) )
         return INA219_INVALID_ADDR;
 
     int16_t value;
     ina219_result_t ret_val = INA219_GetShuntVoltageRaw( addr, &value );
-    *voltage = (uint32_t)(value * 0.01);
+    *voltage = (int32_t)(value * SHUNT_VOLTAGE_MULTIPLIER);
     return ret_val;
 }
 
-ina219_result_t INA219_GetBusVoltageMv( uint8_t addr, uint32_t *voltage )
+ina219_result_t INA219_GetBusVoltage( uint8_t addr, int32_t *voltage )
 {
     if( !ina219_is_valid_addr( addr ) )
         return INA219_INVALID_ADDR;
 
     int16_t value;
     ina219_result_t ret_val = INA219_GetBusVoltageRaw( addr, &value );
-    *voltage = (uint32_t)value;
+    *voltage = (int32_t)value;
     return ret_val;
 }
 
-ina219_result_t INA219_GetCurrentMa( uint8_t addr, uint32_t *current )
+ina219_result_t INA219_GetCurrent( uint8_t addr, int32_t *current )
 {
     if( !ina219_is_valid_addr( addr ) )
         return INA219_INVALID_ADDR;
 
     int16_t value_dec;
     ina219_result_t ret_val = INA219_GetCurrentRaw( addr, &value_dec );
-    *current = (uint32_t)(value_dec / ina219_cal[ina219_addr_to_index( addr )].current_lsb_ma);
+    *current = (int32_t)(value_dec * ina219_cal[ina219_addr_to_index( addr )].current_lsb_uA);
     return ret_val;
 }
 
-ina219_result_t INA219_GetPowerMw( uint8_t addr, uint32_t *power )
+ina219_result_t INA219_GetPower( uint8_t addr, int32_t *power )
 {
     if( !ina219_is_valid_addr( addr ) )
         return INA219_INVALID_ADDR;
 
     int16_t value_dec;
     ina219_result_t ret_val = INA219_GetPowerRaw( addr, &value_dec );
-    *power = (uint32_t)(value_dec / ina219_cal[ina219_addr_to_index( addr )].power_lsb_mW);
+    *power = (int32_t)(value_dec * ina219_cal[ina219_addr_to_index( addr )].power_lsb_uW);
     return ret_val;  
 }
 

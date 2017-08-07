@@ -33,7 +33,7 @@
 #define INA219_CONFIG_SADCRES_10BIT_1S_148US   (0x0008)  // 1 x 10-bit shunt sample
 #define INA219_CONFIG_SADCRES_11BIT_1S_276US   (0x0010)  // 1 x 11-bit shunt sample
 #define INA219_CONFIG_SADCRES_12BIT_1S_532US   (0x0018)  // 1 x 12-bit shunt sample
-#define INA219_CONFIG_SADCRES_12BIT_2S_1060US  (0x0048)	 // 2 x 12-bit shunt samples averaged together
+#define INA219_CONFIG_SADCRES_12BIT_2S_1060US  (0x0048)  // 2 x 12-bit shunt samples averaged together
 #define INA219_CONFIG_SADCRES_12BIT_4S_2130US  (0x0050)  // 4 x 12-bit shunt samples averaged together
 #define INA219_CONFIG_SADCRES_12BIT_8S_4260US  (0x0058)  // 8 x 12-bit shunt samples averaged together
 #define INA219_CONFIG_SADCRES_12BIT_16S_8510US (0x0060)  // 16 x 12-bit shunt samples averaged together
@@ -184,36 +184,36 @@ ina219_result_t INA219_GetCurrentRaw( uint8_t addr, int16_t *current );
 ina219_result_t INA219_GetPowerRaw( uint8_t addr, int16_t *power );
 
 /**
-* Get Shunt Voltage in MilliVolts (mV)
+* Get Shunt Voltage in MicroVolts (uV)
 *
 * @param[in] addr - I2C Address of device
 * @param[out] voltage
 */
-ina219_result_t INA219_GetShuntVoltageMv( uint8_t addr, uint32_t *voltage );
+ina219_result_t INA219_GetShuntVoltage( uint8_t addr, int32_t *voltage );
 
 /**
-* Get Bus Voltage in MilliVolts (V)
+* Get Bus Voltage in MilliVolts (mV)
 *
 * @param[in] addr - I2C Address of device
 * @param[out] voltage
 */
-ina219_result_t INA219_GetBusVoltageMv( uint8_t addr, uint32_t *voltage );
+ina219_result_t INA219_GetBusVoltage( uint8_t addr, int32_t *voltage );
 
 /**
-* Get Current in MilliAmps (mA)
+* Get Current in MicroAmps (uA)
 *
 * @param[in] addr - I2C Address of device
 * @param[out] current
 */
-ina219_result_t INA219_GetCurrentMa( uint8_t addr, uint32_t *current );
+ina219_result_t INA219_GetCurrent( uint8_t addr, int32_t *current );
 
 /**
-* Get Power in MilliWatts (mW)
+* Get Power in MicroWatts (mW)
 *
 * @param[in] addr - I2C Address of device
 * @param[out] power
 */
-ina219_result_t INA219_GetPowerMw( uint8_t addr, uint32_t *power );
+ina219_result_t INA219_GetPower( uint8_t addr, int32_t *power );
 
 /**
 * Perform a reset (Bit 15 of configuration register)

@@ -18,10 +18,10 @@
 	},
 	"elements": {
 		"current": {
-			"label": "Read Current (mA)",
+			"label": "Read Current (uA)",
 			"language": {
 				"en": {
-					"label": "Read Current (mA)"
+					"label": "Read Current (uA)"
 				}
 			},
 			"returnType": "int",
@@ -30,10 +30,10 @@
 			"code": ""
 		},
 		"bus_voltage": {
-			"label": "Read Bus Voltage (Volts)",
+			"label": "Read Bus Voltage (mV)",
 			"language": {
 				"en": {
-					"label": "Read Bus Voltage (Volts)"
+					"label": "Read Bus Voltage (mV)"
 				}
 			},
 			"returnType": "int",
@@ -42,10 +42,10 @@
 			"code": ""
 		},
 		"shunt_voltage": {
-			"label": "Read Shunt Voltage (mV)",
+			"label": "Read Shunt Voltage (uV)",
 			"language": {
 				"en": {
-					"label": "Read Shunt Voltage (mV)"
+					"label": "Read Shunt Voltage (uV)"
 				}
 			},
 			"returnType": "int",
