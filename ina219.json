@@ -90,7 +90,7 @@
 				"value":"INA219_CONFIG_BVOLTAGERANGE_32V",
 				"regex":"^[a-zA-Z0-9_.]*$"
 			},
-			"busAddress":{
+			"busAdcRes":{
 				"name":"Bus ADC Resolution",
 				"input":"Combo",
 				"prefix":"#define INA219_BUS_ADC_RES ",
