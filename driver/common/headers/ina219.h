@@ -215,7 +215,7 @@ ina219_result_t INA219_GetBusVoltage( uint8_t addr, int32_t *voltage );
 ina219_result_t INA219_GetCurrent( uint8_t addr, int32_t *current );
 
 /**
-* Get Power in MicroWatts (mW)
+* Get Power in MicroWatts (uW)
 *
 * @param[in] addr - I2C Address of device
 * @param[out] power
