@@ -135,7 +135,14 @@ ina219_result_t INA219_ReadReg( uint8_t addr, uint8_t reg, uint16_t *value );
 * Modifies the INA219_REG_CALIBRATION and INA219_REG_CONFIG registers to provide accurate current readings.
 *
 * @param[in] addr - I2C Address of device
-* @param[in] config
+* @param[in] shunt_milli_ohms - Shunt resistor value in milli-ohms
+* @param[in] voltage_range - INA219_CONFIG_BVOLTAGERANGE_16V or INA219_CONFIG_BVOLTAGERANGE_32V
+* @param[in] gain - INA219_CONFIG_GAIN_1_40MV, INA219_CONFIG_GAIN_2_80MV, INA219_CONFIG_GAIN_4_160MV, or INA219_CONFIG_GAIN_8_320MV
+* @param[in] bus_adc_resolution - INA219_CONFIG_BADCRES_9BIT, INA219_CONFIG_BADCRES_10BIT, INA219_CONFIG_BADCRES_11BIT, INA219_CONFIG_BADCRES_12BIT
+* @param[in] shunt_adc_resolution - INA219_CONFIG_SADCRES_9BIT_1S_84US, INA219_CONFIG_SADCRES_10BIT_1S_148US, INA219_CONFIG_SADCRES_11BIT_1S_276US,
+*                                   INA219_CONFIG_SADCRES_12BIT_1S_532US, INA219_CONFIG_SADCRES_12BIT_2S_1060US, INA219_CONFIG_SADCRES_12BIT_4S_2130US,
+*                                   INA219_CONFIG_SADCRES_12BIT_8S_4260US, INA219_CONFIG_SADCRES_12BIT_16S_8510US, INA219_CONFIG_SADCRES_12BIT_32S_17MS,
+*                                   INA219_CONFIG_SADCRES_12BIT_64S_34MS, INA219_CONFIG_SADCRES_12BIT_128S_69MS
 */
 ina219_result_t INA219_Configure( uint8_t addr, uint32_t shunt_milli_ohms, uint16_t voltage_range, uint16_t gain, uint16_t bus_adc_resolution, uint16_t shunt_adc_resolution );
 

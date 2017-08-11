@@ -61,10 +61,11 @@
 		"values":{
 			"address":{
 				"name":"I2C Address (Hex)",
-				"input":"TextField",
+				"input":"Combo",
 				"prefix":"#define INA219_ADDR ",
+				"options": ["0x40", "0x41", "0x44", "0x45"],
 				"value":"0x40",
-				"regex":"^0x[0-9]*$"
+				"regex":"^[a-zA-Z0-9_.]*$"
 			},
 			"shuntValue":{
 				"name":"Shunt Value (Milliohms)",
