@@ -41,6 +41,18 @@
 			"icon": null,
 			"code": ""
 		},
+		"power": {
+			"label": "Read Power (uW)",
+			"language": {
+				"en": {
+					"label": "Read Power (uW)"
+				}
+			},
+			"returnType": "int",
+			"inputType": "void",
+			"icon": null,
+			"code": ""
+		},
 		"shunt_voltage": {
 			"label": "Read Shunt Voltage (uV)",
 			"language": {
